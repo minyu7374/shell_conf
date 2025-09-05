@@ -21,6 +21,9 @@ eval "$(mcfly init bash)"
 source "$HOME/.mcfly.rc"
 
 eval "$(lua ~/.local/z.lua/z.lua --init bash enhanced once fzf)"
+source "$HOME/.local/forgit/forgit.plugin.sh"
+# ln -sf ~/.local/forgit/completions/git-forgit.bash ~/.local/share/bash-completion/completions/
+
 [[ "$_OS" = Drawin ]] && source /opt/homebrew/etc/profile.d/bash_completion.sh
 
 eval "$(direnv hook bash)"
