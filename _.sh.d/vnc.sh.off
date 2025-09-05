@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#alias vnc-pass='nohup x11vnc -usepw -ncache 10 -scale 0.5x0.5 >/dev/null &'
+#alias vnc-pass-forver='nohup x11vnc -ncache 10 -usepw -forever -scale 0.5x0.5 >/dev/null &'
+
+# ssh wmy@ddns -L 5900:localhost:5900
+# alias vnc-local='nohup x11vnc -ncache 10 -localhost -scale 0.5x0.5 >/dev/null &'
+# alias vnc-local-forver='nohup x11vnc -ncache 10 -localhost -forever -scale 0.5x0.5 >/dev/null &'

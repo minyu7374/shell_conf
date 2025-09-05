@@ -1,0 +1,13 @@
+# emacs
+#让 lsp-mode 使用 Emacs 原生 plist（:key value）结构，替代默认的 ht 哈希表(在配置中强制setenv)
+# export LSP_USE_PLISTS=true      # lsp-mode Use plists for deserialization
+
+# for emacs daemon
+# if [ -z "$XDG_RUNTIME_DIR" ]; then
+    # XDG_RUNTIME_DIR="/run/user/$(id -u)"
+    # if [ -d "$XDG_RUNTIME_DIR" ] && [ -w "$XDG_RUNTIME_DIR" ]; then
+        # export XDG_RUNTIME_DIR
+    # else
+        # unset XDG_RUNTIME_DIR
+    # fi
+# fi
