@@ -6,6 +6,23 @@ git-repo-clean() {
         alias git-gc-clean="git gc --prune=now --aggressive"
 }
 
+alias gst='git status'
+alias gds='forgit::diff --staged'
+alias gaa='git add --all'
+alias gap='git apply'
+alias grm='git rm'
+alias grmc='git rm --cached'
+alias gc='git commit --verbose'
+alias gc!='git commit --verbose --amend'
+
+alias gf='git fetch'
+alias gl='git pull'
+alias gp='git push'
+alias gpf!='git push --force'
+
+alias glos='git log --stat'
+alias glog='git log --graph'
+
 ## python
 alias venv-in='source $HOME/.venv/bin/activate'
 alias venv-out="deactivate"

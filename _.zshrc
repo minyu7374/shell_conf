@@ -55,8 +55,7 @@ zinit wait lucid for \
     OMZL::completion.zsh \
     OMZL::directories.zsh \
     OMZL::clipboard.zsh \
-    OMZP::sudo \
-    OMZP::git
+    OMZP::sudo
 
 ## zsh-vi-mode(initmode binkey冲突解决) 替换 OMZP::vi-mode
 zinit light-mode wait lucid for \
@@ -70,7 +69,7 @@ _compinit_opt() {
     autoload -Uz compinit
     # local zcomp_path=${ZINIT[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump}
     local zcomp_path="$HOME/.zcompdump"
-    local _zcomp_files; _zcomp_files=($zcomp_path(Nm-15)) # 找到指定天内修改的文件
+    local -a _zcomp_files=( ${zcomp_path}(Nm-15) )  # 找到指定天内修改的文件
     (( $#_zcomp_files )) && compinit -C || compinit
     [[ ! -f $zcomp_path.zwc || $zcomp_path -nt $zcomp_path.zwc ]] && zcompile $zcomp_path
 }
@@ -96,26 +95,28 @@ zinit light-mode wait lucid for \
 # zinit ice lucid wait"0b" from"gh-r" as"program" atload'source <(mcfly init zsh)'
 # zinit light cantino/mcfly
 
-# 理论上应该保证先加载完fzf，再加载mcfly和fzf-tab，保证ctrl+r,alt+i的归属，但是目前看这样写没有问题
-
 # fzf配置相对较多，单独创建一个函数
 _fzf_conf() {
     local _fzf_zle_comm_opts="--ansi --height=75% --preview-window=right:60%:wrap"
-    #_ctrl_t_preview="[[ -d {} ]] && eza -la --color=always || bat --style=numbers --color=always --line-range=:200 {}"
-    local _ctrl_t_preview="[[ -d {} ]] && eza -la --color=always || fzf-preview.sh {}:200"
-    local _alt_c_preview="eza -la --color=always {}"
+    # local _ctrl_t_preview="--preview '[[ -d {} ]] && eza -la --color=always || bat --style=numbers --color=always --line-range=:200 {}'"
+    local _ctrl_t_preview="--preview '[[ -d {} ]] && eza -la --color=always || fzf-preview.sh {}:200'"
+    local _alt_c_preview="--preview 'eza -la --color=always {}'"
 
     FZF_DEFAULT_COMMAND="fd --strip-cwd-prefix --follow --exclude .git"
 
     FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"
 
-    FZF_CTRL_T_OPTS="$_fzf_zle_comm_opts --bind 'alt-h:reload($FZF_CTRL_T_COMMAND --hidden),alt-H:reload($FZF_CTRL_T_COMMAND)' --preview \"$_ctrl_t_preview\""
-    FZF_ALT_C_OPTS="$_fzf_zle_comm_opts --bind 'alt-h:reload($FZF_ALT_C_COMMAND --hidden),alt-H:reload($FZF_ALT_C_COMMAND)' --preview \"$_alt_c_preview\""
+    local make_bind="--bind 'alt-.:reload(<CMD> --hidden),alt-,:reload(<CMD>)'"
+    FZF_CTRL_T_OPTS="$_fzf_zle_comm_opts ${make_bind//<CMD>/$FZF_CTRL_T_COMMAND} $_ctrl_t_preview"
+    FZF_ALT_C_OPTS="$_fzf_zle_comm_opts ${make_bind//<CMD>/$FZF_ALT_C_COMMAND} $_alt_c_preview"
 
-    bindkey "^[f" fzf-file-widget #和fzf-cd-widget以及自己定义的alias-fzf-widget保持相似的快捷键
+    export FZF_DEFAULT_COMMAND  # 使用fd效率明显高很多，export出全局生效
+    bindkey "^[f" fzf-file-widget # 和fzf-cd-widget以及自己定义的alias-fzf-widget保持相似的快捷键
 }
 
+# 理论上应该保证先加载完fzf，再加载mcfly和fzf-tab，保证ctrl+r,alt+i的归属，但是目前看这样写实测没有问题
+# 基于fzf的forgit 代替 OMZP::git
 zinit light-mode wait lucid for \
  as"null" atload'
     source <(fzf --zsh); _fzf_conf

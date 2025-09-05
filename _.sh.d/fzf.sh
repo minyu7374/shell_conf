@@ -22,9 +22,6 @@ fdf-do() {
     fdf "$cmd" "$@"
 }
 
-# 指向fd的补全
-compdef _fd fdf
-
 # 常用 alias
 alias fdc='fdf-do cd d'
 alias fdo='fdf-do open f'
@@ -43,7 +40,10 @@ alias alsf=alias-fzf
 alias alsf!='eval "$(alias-fzf)"'
 
 [ -n "$ZSH_VERSION" ] && {
-    # # fdf-widget 行为同步到 fzf_file_widget
+    # 指向fd的补全
+    compdef _fd fdf
+
+    # # fdf-widget 默认行为已同步到fzf_file_widget，不需要单独创建widget了
     # fdf-widget() {
     # local selected
     # selected=$(fdf) && [[ -n $selected ]] && LBUFFER+="$selected "
